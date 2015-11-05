@@ -5,6 +5,7 @@ var MyBox = React.createClass({
   /*
   componentWillMount: function() {
     this.setState({text: "componentWillMount set the state"});
+    This is Spencer's new line of code.
   },
   */
   edit: function() {
