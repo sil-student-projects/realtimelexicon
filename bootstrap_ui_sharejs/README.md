@@ -9,7 +9,7 @@ I've built a dictionary User Interface. It is using Bootstrap for all of its sty
 
 # How to run the example
 
-1. Clone this repo,
+1. Clone this repo.
 
 2. Fetch the bootstrap_ui_sharejs branch.
 
