@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Realtime Dictionary</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="lf_logo-beta.png">
+    <!--<link href="bootstrap.min.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="bcsocket.js"></script>   <!-- add transport -->
+    <script src="webclient/share.uncompressed.js"></script>   <!-- ShareJS -->
+    <script src="webclient/textarea.js"></script>
+    <!-- Custom styles for this template -->
+    <link href="dashboard.css" rel="stylesheet">
+    <script src="ie-emulation-modes-warning.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top"  id="sil-navbar">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" id="sil-navbar-brand" href="#">The RealTime Dictionary</a>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">My Projects</a></li>
+            <li><a href="#">Learn</a></li>
+            <li><a href="#">Discuss</a></li>
+            <li><a href="#">Profile Settings</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">Word List<span class="sr-only">(current)</span></a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="">chair</a></li>
+            <li><a href="">lamp</a></li>
+            <li><a href="">run</a></li>
+            <li><a href="">sport</a></li>
+            <li><a href="">animal</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+          <h1 class="page-header">
+            <img src="lf_logo-beta.png" alt="Language Forge" align="bottom" width="96" height="117">
+            Dictionary Name
+          </h1>
+
+          <h2 class="sub-header">Selected Word</h2>
+
+          <div class="input-group" id="sil-word-input">
+              <span class="input-group-addon" id="basic-addon1">Word</span>
+              <input id="word" type="text" class="form-control" aria-describedby="basic-addon1">
+          </div></br>
+
+          <div class="input-group" id="sil-meaning-input">
+              <span class="input-group-addon" id="basic-addon1">Meaning</span>
+              <input id="meaning" type="text" class="form-control" aria-describedby="basic-addon1">
+          </div></br>
+
+          <div class="dropdown">
+            Part of Speech
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              Unknown
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="partofspeech" aria-labelledby="dropdownMenu1">
+              <li><a href="#">Adjective (adj)</a></li>
+              <li><a href="#">Preposition (prep)</a></li>
+              <li><a href="#">Adverb (adv)</a></li>
+              <li><a href="#">Classifier (cla)</a></li>
+              <li><a href="#">Numeral (num)</a></li>
+              <li><a href="#">Noun (n)</a></li>
+              <li><a href="#">Proper Noun (nprop)</a></li>
+              <li><a href="#">Particle (p)</a></li>
+              <li><a href="#">Pronoun (pro)</a></li>
+              <li><a href="#">Verb (v)</a></li>
+            </ul>
+          </div></br></br></br>
+
+          Semantic Domain
+
+        </div>
+      </div>
+    </div>
+
+    <script>
+        // get the textarea element
+        var word = document.getElementById("word");
+        var meaning = document.getElementById("meaning");
+;
+        // connect to the server
+        var connection1 = sharejs.open('wordfile', 'text', function(error, doc) {
+            // this function is called once the connection is opened
+            if (error) {
+                console.log("ERROR:", error);
+            } else {
+                console.log("Connection1 is working");
+                // attach the ShareJS document to the textarea
+                doc.attach_textarea(word);
+            }
+        });
+
+        var connection2 = sharejs.open('meaningfile', 'text', function(error, doc) {
+            // this function is called once the connection is opened
+            if (error) {
+                console.log("ERROR:", error);
+            } else {
+                console.log("Connection2 is working");
+                // attach the ShareJS document to the textare
+                doc.attach_textarea(meaning);
+            }
+        });
+    </script>
+
+    <!-- Bootstrap core JavaScript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

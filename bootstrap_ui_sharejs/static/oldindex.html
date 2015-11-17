@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <title>Mockup Dictionary UI</title>
+        <script src="bcsocket.js"></script>   <!-- add transport -->
+        <script src="webclient/share.uncompressed.js"></script>   <!-- ShareJS -->
+        <script src="webclient/textarea.js"></script>   <!-- helper to attach textarea to ShareJS server -->
+        <link rel="stylesheet" type="text/css" href="dashboard.css">
+    </head>
+    <body>
+        <h1>Mockup Dictionary UI</h1></br>
+        Box 1: <input id='input1'></input></br>
+        Box 2: <input id='input2'></input></br>
+
+        <script>
+            // get the textarea element
+            var elem1 = document.getElementById("input1");
+            var elem2 = document.getElementById("input2");
+;
+            // connect to the server
+            var connection1 = sharejs.open('test1', 'text', function(error, doc) {
+                // this function is called once the connection is opened
+                if (error) {
+                    console.log("ERROR:", error);
+                } else {
+                    console.log("Connection1 is working");
+                    // attach the ShareJS document to the textarea
+                    doc.attach_textarea(elem1);
+                }
+            });
+
+            var connection2 = sharejs.open('test2', 'text', function(error, doc) {
+                // this function is called once the connection is opened
+                if (error) {
+                    console.log("ERROR:", error);
+                } else {
+                    console.log("Connection2 is working");
+                    // attach the ShareJS document to the textare
+                    doc.attach_textarea(elem2);
+                }
+            });
+        </script>
+    </body>
+</html>
