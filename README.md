@@ -1,4 +1,4 @@
-This is the RealTimeLexicon GitHub.
+##This is the RealTimeLexicon GitHub.##
 
 The exampleServer.js file is the code that I put up for an example. It assumes that you have mongodb running on your machine.
 
