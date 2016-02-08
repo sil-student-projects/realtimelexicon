@@ -1,9 +1,15 @@
-##This is the RealTimeLexicon GitHub.##
+##This is Dave's branch for the RealTimeLexicon GitHub.##
+The directory structure is as follows.
 
-The exampleServer.js file is the code that I put up for an example. It assumes that you have mongodb running on your machine.
+###keyword-wrangler directory###
+As things currently stand, the nodecraftsman tutorial (which I am HEAVILY modifying)
+is in the keyword-wrangler directory. That directory contains its own README
+with instructions specefic to it.
 
-The line:
+###miscellaneous directory###
+The miscellaneous directory contains past work from this repo.
 
-var db = require('sharedb-mongo')('mongodb://localhost:27017/mydb');
-
-accesses the db called 'mydb' so you have to have mongodb running and then put the name of the db you want to access on that line.
+###experiments directory###
+The experiments directory is supposed to be a place to put isolated code segments
+for experimentation purposes. But maybe if something that works is stumbled on,
+just keep it in here.
