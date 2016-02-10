@@ -16,7 +16,7 @@ module.exports = function() {
       {'_id': 2, 'name': 'Kaitlyn Gillie', 'category': 'female'}
     ];
 
-  this.Given(/^a non-empty database$/, function (callback) {
+  this.Given(/^a non-empty database and a running server$/, function (callback) {
     async.series([
         function (callback) {
           server = Server(PORT);

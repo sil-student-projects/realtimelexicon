@@ -4,7 +4,9 @@ var Percolator = require('percolator').Percolator;
 var mockAbstract = require('../../db-abstract/mockAbstract');
 
 var Server = function(port) {
-	var server = Percolator({'port': port, 'autoLink': false});
+	var server = Percolator({'port': port,
+							 'autoLink': false,
+							 'staticDir': __dirname + '/../frontend'});
 
 	server.route('/api/keywords',
 	{
