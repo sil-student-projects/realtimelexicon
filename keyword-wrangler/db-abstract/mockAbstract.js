@@ -3,18 +3,19 @@
 var MongoClient = require('mongodb').MongoClient;
 
 var mockAbstract = {};
-const dbURL = 'mongodb://localhost:27017/mockAbstract';
+const DB_URL = 'mongodb://localhost:27017/mockAbstract';
+const COLL_NAME = 'temporary';
 
 mockAbstract.create = function (obj, callback) {
 	MongoClient.connect(
-		dbURL,
+		DB_URL,
 		function (err, connection) {
 			if (err) {
 				connection.close();
 				console.error(err);
 			}
 
-			var collection = connection.collection('temporary');
+			var collection = connection.collection(COLL_NAME);
 
 			collection.insert(obj, function (err, count) {
 				if (err) {
@@ -32,14 +33,14 @@ mockAbstract.create = function (obj, callback) {
 mockAbstract.read = function (filter, callback) {
 	var result = [];
 	MongoClient.connect(
-		dbURL,
+		DB_URL,
 		function (err, connection) {
 			if (err) {
 				connection.close();
 				console.error(err);
 			}
 
-			var collection = connection.collection('temporary');
+			var collection = connection.collection(COLL_NAME);
 
 			collection.find(filter).each(function (err, doc) {
 				if (err) {
@@ -60,7 +61,7 @@ mockAbstract.read = function (filter, callback) {
 
 mockAbstract.delete = function (callback) {
 	MongoClient.connect(
-		dbURL,
+		DB_URL,
 		function (err, connection) {
 			if (err) {
 				connection.close();
@@ -68,7 +69,7 @@ mockAbstract.delete = function (callback) {
 			}
 
 			var deleted = [];
-			var collection = connection.collection('temporary');
+			var collection = connection.collection(COLL_NAME);
 
 			collection.find().each(function (err, doc) {
 				if (err) {

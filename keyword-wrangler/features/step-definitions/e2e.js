@@ -3,11 +3,14 @@
 var async = require('async');
 var assert = require('assert');
 var request = require('request');
+var Server = require('../../src/backend/server.js').Server;
 var mockAbstract = require('../../db-abstract/mockAbstract');
 
 module.exports = function() {
 
   var obj = {};
+  var server;
+  const PORT = 8081;
   var expected = [
       {'_id': 1, 'name': 'Dave Gillie', 'category': 'male'},
       {'_id': 2, 'name': 'Kaitlyn Gillie', 'category': 'female'}
@@ -16,19 +19,25 @@ module.exports = function() {
   this.Given(/^a non-empty database$/, function (callback) {
     async.series([
         function (callback) {
+          server = Server(PORT);
+          server.listen(function (err) {
+            if (err) {
+              console.error(err);
+            }
+            callback();
+          });
+        },
+        function (callback) {
           mockAbstract.delete(function (deleted) {
-            console.log("DELETED:", deleted);
             callback();
           });
         },
         function (callback) {
           mockAbstract.create(expected, function (count) {
-            console.log("COUNT:", count);
             callback();
           });
         }
       ], function (err, results) {
-        console.log("RESULTS:", results);
         callback();
       });
   });
@@ -36,7 +45,7 @@ module.exports = function() {
   this.When(/^I make a get request to \/api\/keywords\/$/, function (callback) {
     request.get(
         {
-          'url': 'http://localhost:8080/api/keywords/',
+          'url': 'http://localhost:'+PORT+'/api/keywords/',
           'json': true
         },
         function (err, res, body) {
@@ -51,13 +60,16 @@ module.exports = function() {
       async.series([
         function (callback) {
           mockAbstract.delete(function (deleted) {
-            console.log("DELETED:", deleted);
             del = deleted;
+            callback();
+          });
+        },
+        function (callback) {
+          server.close(function() {
             callback();
           });
         }
       ], function (err, results) {
-          console.log("RESULTS:", results);
           assert.deepEqual(expected, del);
           assert.equal(obj.res.statusCode, 200);
           assert.deepEqual(obj.body._items, expected);

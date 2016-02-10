@@ -7,5 +7,5 @@ var expected = [
       {'_id': 2, 'name': 'Kaitlyn Gillie', 'category': 'female'}
     ];
 
-//mockAbstract.create(expected);
-//mockAbstract.delete();
+//mockAbstract.create(expected, function() {});
+//mockAbstract.delete(function() {});
