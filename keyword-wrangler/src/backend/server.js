@@ -14,6 +14,19 @@ var Server = function(port) {
 			mockAbstract.read({}, function (result) {
 				res.collection(result).send();
 			});
+		},
+
+		POST: function (req, res) {
+			req.onJson(function (err, body) {
+				if (err) {
+					console.error(err);
+					res.status.internalServerError(err);
+				} else {
+					mockAbstract.create(body, function (count) {
+						res.object({'status': 'ok', 'ids': count.insertedIds}).send();
+					});
+				}
+			});
 		}
 	});
 
