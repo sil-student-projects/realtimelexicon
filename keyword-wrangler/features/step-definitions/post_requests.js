@@ -108,12 +108,13 @@ module.exports = function () {
 	this.When(/^I make a post request to \/api\/keywords\/:id\/$/, function (callback) {
   		request.post(
   			{
-  				'url': URL,
+  				'url': URL + updateBody._id,
   				'body': updateBody,
   				'json': true
   			},
   			function (err, res, body) {
   				if (err) throw (err);
+  				assert.notEqual(body, body);
   				assert.equal(res.statusCode, 200);
   				callback();
   			});

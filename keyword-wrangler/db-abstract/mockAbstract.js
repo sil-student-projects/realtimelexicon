@@ -29,6 +29,9 @@ mockAbstract.create = function (obj, callback) {
 		});
 };//mockAbstract.delete
 
+mockAbstract.update = function(filter, callback) {
+
+};//mockAbstract.update
 
 mockAbstract.read = function (filter, callback) {
 	var result = [];

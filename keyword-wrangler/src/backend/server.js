@@ -30,6 +30,14 @@ var Server = function(port) {
 		}
 	});
 
+	server.route('/api/keywords/:id',
+	{
+		POST: function(req, res) {
+			var entryId = req.uri.child();
+			res.object({"README": "IMPLEMENT DATABASE WRAPPER FOR UPDATE"}).send();
+		}
+	});
+
 	return server;
 };
 
