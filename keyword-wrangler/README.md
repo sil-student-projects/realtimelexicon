@@ -16,3 +16,7 @@ features/step-definitions
 In order to make running the tests easier, I made a test-script file in the
 top level directory. In order to run the tests, simply run 'node test-script.js'
 in the top level directory.
+
+###MongoDB###
+You will have to get a mongodb server running on your machine in order to use this app. Here is a link with possible instructions?
+https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
