@@ -2,11 +2,11 @@
 
 var MongoClient = require('mongodb').MongoClient;
 
-var mockAbstract = {};
+var MockAbstract = function() {};
 const DB_URL = 'mongodb://localhost:27017/mockAbstract';
 const COLL_NAME = 'temporary';
 
-mockAbstract.create = function (obj, callback) {
+MockAbstract.prototype.create = function (obj, callback) {
 	MongoClient.connect(
 		DB_URL,
 		function (err, connection) {
@@ -27,13 +27,13 @@ mockAbstract.create = function (obj, callback) {
 				}
 			});
 		});
-};//mockAbstract.delete
+};
 
-mockAbstract.update = function(filter, callback) {
+MockAbstract.prototype.update = function(filter, callback) {
 
-};//mockAbstract.update
+};
 
-mockAbstract.read = function (filter, callback) {
+MockAbstract.prototype.read = function (filter, callback) {
 	var result = [];
 	MongoClient.connect(
 		DB_URL,
@@ -59,10 +59,10 @@ mockAbstract.read = function (filter, callback) {
 				}
 			});
 		});
-};//mockAbstract.read
+};
 
 
-mockAbstract.delete = function (callback) {
+MockAbstract.prototype.delete = function (callback) {
 	MongoClient.connect(
 		DB_URL,
 		function (err, connection) {
@@ -91,6 +91,6 @@ mockAbstract.delete = function (callback) {
 
 			
 		});
-};//mockAbstract.delete
+};
 
-module.exports = mockAbstract;
+module.exports = new MockAbstract();
