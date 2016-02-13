@@ -33,8 +33,20 @@ var Server = function(port) {
 	server.route('/api/keywords/:id',
 	{
 		POST: function(req, res) {
-			var entryId = req.uri.child();
-			res.object({"README": "IMPLEMENT DATABASE WRAPPER FOR UPDATE"}).send();
+			req.onJson(function (err, body) {
+				if (err) {
+					console.error(err);
+					res.status.internalServerError(err);
+				} else {
+					var filter = {'_id': req.uri.child()};
+					mockAbstract.update(
+						filter,
+						body,
+						function (results) {
+							res.object(results).send();
+						});
+				}
+			});
 		}
 	});
 

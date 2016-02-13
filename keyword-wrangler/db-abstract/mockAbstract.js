@@ -29,8 +29,32 @@ MockAbstract.prototype.create = function (obj, callback) {
 		});
 };
 
-MockAbstract.prototype.update = function(filter, callback) {
+MockAbstract.prototype.update = function(filter, setobj, callback) {
+	MongoClient.connect(
+		DB_URL,
+		function (err, connection) {
+			if (err) {
+				connection.close();
+				console.error(err);
+			}
 
+			var collection = connection.collection(COLL_NAME);
+
+			collection.update(
+				filter,
+				{$set: setobj},
+				{'multi': true},
+				function (err, results) {
+					if (err) {
+						connection.close();
+						console.error(err);
+						callback(err);
+					} else {
+						connection.close();
+						callback(results);
+					}
+			});
+		});
 };
 
 MockAbstract.prototype.read = function (filter, callback) {

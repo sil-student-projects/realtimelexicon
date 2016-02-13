@@ -11,19 +11,18 @@ module.exports = function () {
 	const PORT = 8081;
 	const URL = 'http://localhost:'+PORT+'/api/keywords/';
 	var server;
+	var updateBodyID = '1';
 	var updateBody = {
-		'_id': 1,
-		'name': "David Gillie",
-		'category': 'male'
+		'name': "David Gillie"
 	};
 	var lu = {
-		'_id': 9000,
+		'_id': '9000',
 		'name': 'Dr. Lu',
 		'category': 'male'
 	};
 	var preload = [
-      {'_id': 1, 'name': 'Dave Gillie', 'category': 'male'},
-      {'_id': 2, 'name': 'Kaitlyn Gillie', 'category': 'female'}
+      {'_id': '1', 'name': 'Dave Gillie', 'category': 'male'},
+      {'_id': '2', 'name': 'Kaitlyn Gillie', 'category': 'female'}
     ];
 
     //SAME GIVEN FOR MULTIPLE WHEN/THENS
@@ -108,14 +107,14 @@ module.exports = function () {
 	this.When(/^I make a post request to \/api\/keywords\/:id\/$/, function (callback) {
   		request.post(
   			{
-  				'url': URL + updateBody._id,
+  				'url': URL + updateBodyID,
   				'body': updateBody,
   				'json': true
   			},
   			function (err, res, body) {
   				if (err) throw (err);
-  				assert.notEqual(body, body);
   				assert.equal(res.statusCode, 200);
+  				assert.deepEqual(body, { ok: 1, n: 1 });
   				callback();
   			});
 	});
@@ -130,6 +129,7 @@ module.exports = function () {
 				'json': true
 			},
 			function (err, res, body) {
+				server.close();
 				assert.equal(res.statusCode, 200);
 				assert.deepEqual(expected, body._items);
 				callback();
