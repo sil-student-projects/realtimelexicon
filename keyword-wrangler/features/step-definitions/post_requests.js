@@ -129,10 +129,14 @@ module.exports = function () {
 				'json': true
 			},
 			function (err, res, body) {
-				server.close();
-				assert.equal(res.statusCode, 200);
-				assert.deepEqual(expected, body._items);
-				callback();
+
+				//Here I got lazy and didn't clean this up with async.series
+				mockAbstract.delete(function () {
+					server.close();
+					assert.equal(res.statusCode, 200);
+					assert.deepEqual(expected, body._items);
+					callback();
+				});
 			});
 	});
 
