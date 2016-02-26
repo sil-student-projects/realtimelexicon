@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    title ShareDB
+  body
+    p #{id}: #{data}
+    h2 Submit an operation to the server
+    form(action="/submitop", method="post")
+      div
+        label Doc <br />
+        input(type="text", placeholder="doc name", size=50, name="doc")
+      div
+        label Op <br />
+        input(type="text", placeholder="json for new doc or operation on doc", size="50", name="op")
+      div
+        input(type="submit", value="SubmitOp!")
