@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <!-- when using the mode "code", it's important to specify charset utf-8 -->
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
+    <link href="jsoneditor.css" rel="stylesheet" type="text/css">
+    <script src="jsoneditor.js"></script>
+    <script src="sharedb.js"></script>
+  </head>
+  <body>
+    <div id="jsoneditor" style="width: 400px; height: 400px;"></div>
+    <script>
+      var connection = new window.sharedb.Connection(
+        new WebSocket("ws://localhost:8080"));
+      var doc = connection.get("collection", "document");
+      doc.subscribe(function(error){
+        if (error) {
+          console.log("Failed to subscribe.", error);
+        }
+        if (!doc.type) {
+          doc.create({x: "hello"});
+          console.log('add {x: "hello"}');
+        }
+
+        // create the editor
+        var container = document.getElementById("jsoneditor");
+        setTimeout(function() {
+          var editor = new JSONEditor(container, {onChange:function(type, change) {
+            doc.submitOp([{p:[], od:doc.data, oi:editor.get()}], true);
+          }}, doc.data);
+          doc.on('op', function(op, local) {
+            if (!local) {
+              console.log("op:", op);
+              console.log("doc.data:", doc.data);
+              editor.set(doc.data);
+            }});
+        }, 2000);
+      });
+    </script>
+  </body>
+</html>
