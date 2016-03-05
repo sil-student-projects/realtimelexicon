@@ -1,3 +1,4 @@
+var browserChannel = require('browserchannel').server;
 var http = require("http");
 var sharedb = require("sharedb");
 var express = require("express");
@@ -6,22 +7,19 @@ var app = express();
 var WebSocket = require("ws");
 var Duplex = require("stream").Duplex;
 
-var server = http.createServer(
-  app.use(express.static(__dirname + "/static")));
-
-var wss = new WebSocket.Server({
-  server: server
-});
 var share = sharedb();
 
-wss.on("connection", function(session, req) {
+var bc_middleware = browserChannel(function(session) {
+  console.log('New session:', session.id,
+              'from', session.address,
+              'with cookies', session.headers.cookie);
   var stream = new Duplex({
     objectMode: true
   });
 
-  stream.headers = session.upgradeReq.headers;
-  stream.remoteAddress = session.upgradeReq.connection.remoteAddress;
-  console.log("remote address:"+stream.remoteAddress);
+  //stream.headers = session.upgradeReq.headers;
+  //stream.remoteAddress = session.upgradeReq.connection.remoteAddress;
+  //console.log("remote address:"+stream.remoteAddress);
   stream._write = function(op, encoding, next) {
     session.send(JSON.stringify(op));
     next();
@@ -33,7 +31,6 @@ wss.on("connection", function(session, req) {
   stream.on("end", function() {
     session.close();
   });
-
   session.on("message", function(op) {
     console.log('op', JSON.stringify(JSON.parse(op), null, 2));
     stream.push(op);
@@ -47,6 +44,11 @@ wss.on("connection", function(session, req) {
 
   share.listen(stream);
 });
+app.use(bc_middleware);
+
+var server = http.createServer(
+  app.use(express.static(__dirname + "/static")));
+
 var port = 8080;
 server.listen(port, function() {
   return console.log("Listening on " + port);
