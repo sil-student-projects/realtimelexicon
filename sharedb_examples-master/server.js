@@ -1,13 +1,13 @@
 var browserChannel = require('browserchannel').server;
 var http = require("http");
-var sharedb = require("sharedb");
 var express = require("express");
 var app = express();
 
-var WebSocket = require("ws");
 var Duplex = require("stream").Duplex;
 
-var share = sharedb();
+var db = require('sharedb-mongo')('mongodb://localhost:27017/mydb');
+var sharedb = require("sharedb");
+var share = sharedb({db: db});
 
 var bc_middleware = browserChannel(function(session) {
   console.log('New session:', session.id,
@@ -17,9 +17,6 @@ var bc_middleware = browserChannel(function(session) {
     objectMode: true
   });
 
-  //stream.headers = session.upgradeReq.headers;
-  //stream.remoteAddress = session.upgradeReq.connection.remoteAddress;
-  //console.log("remote address:"+stream.remoteAddress);
   stream._write = function(op, encoding, next) {
     session.send(JSON.stringify(op));
     next();

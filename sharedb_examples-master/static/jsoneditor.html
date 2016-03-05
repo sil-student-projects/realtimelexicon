@@ -14,7 +14,7 @@
     <script>
       var socket = new BCSocket('/channel');
       var connection = new window.sharedb.Connection(socket);
-      var doc = connection.get("collection", "document");
+      var doc = connection.get("temporary", "hello-world-document");
       doc.subscribe(function(error){
         if (error) {
           console.log("Failed to subscribe.", error);
