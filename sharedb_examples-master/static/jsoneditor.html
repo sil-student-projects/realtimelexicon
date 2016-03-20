@@ -1,43 +1,134 @@
 <!DOCTYPE HTML>
 <html>
-  <head>
-    <!-- when using the mode "code", it's important to specify charset utf-8 -->
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 
-    <link href="jsoneditor.css" rel="stylesheet" type="text/css">
-    <script src="jsoneditor.js"></script>
-    <script src="sharedb.js"></script>
-    <script src="channel/bcsocket.js"></script>
-  </head>
-  <body>
-    <div id="jsoneditor" style="width: 400px; height: 400px;"></div>
-    <script>
-      var socket = new BCSocket('/channel');
-      var connection = new window.sharedb.Connection(socket);
-      var doc = connection.get("temporary", "hello-world-document");
-      doc.subscribe(function(error){
-        if (error) {
-          console.log("Failed to subscribe.", error);
-        }
-        if (!doc.type) {
-          doc.create({x: "hello"});
-          console.log('add {x: "hello"}');
-        }
+<head>
+  <!-- when using the mode "code", it's important to specify charset utf-8 -->
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 
-        // create the editor
-        var container = document.getElementById("jsoneditor");
-        setTimeout(function() {
-          var editor = new JSONEditor(container, {onChange:function(type, change) {
-            doc.submitOp([{p:[], od:doc.data, oi:editor.get()}], true);
-          }}, doc.data);
-          doc.on('op', function(op, local) {
-            if (!local) {
-              console.log("op:", op);
-              console.log("doc.data:", doc.data);
-              editor.set(doc.data);
-            }});
-        }, 2000);
-      });
-    </script>
-  </body>
+  <link href="jsoneditor.css" rel="stylesheet" type="text/css">
+  <script src="jsoneditor.js"></script>
+  <script src="sharedb.js"></script>
+  <script src="channel/bcsocket.js"></script>
+</head>
+
+<body>
+  <div id="jsoneditor" style="width: 400px; height: 300px;"></div>
+
+  <form>
+    Path:
+    <br>
+    <input id="path" name="Path:">
+    <br> Content to be deleted:
+    <br>
+    <input id="delete" name="Content to be deleted:">
+    <br> Content to be inserted:
+    <br>
+    <input id="insert" name="Content to be inserted:">
+    <br>
+    <button type="button" id="simpleButton">Make Simple Change</button>
+    <button type="button" id="arrayButton">Make Array Change</button>
+  </form>
+
+  <script>
+    var socket = new BCSocket('/channel');
+    var connection = new window.sharedb.Connection(socket);
+    var doc = connection.get("temporary", "hello-world-document");
+    doc.subscribe(function(error) {
+      if (error) {
+        console.log("Failed to subscribe.", error);
+      }
+      if (!doc.type) {
+        doc.create({
+          x: "hello"
+        });
+        console.log('add {x: "hello"}');
+      }
+
+      /////////////////////////////////////////////////////////////////////////
+      /////////////////////////////////New Code////////////////////////////////
+      /////////////////////////////////////////////////////////////////////////
+      //Most Helpful Files:
+      //https://github.com/share/ShareJS/wiki/0.7-JSON-Client-API
+      //https://github.com/ottypes/json0
+      /////////////////////////////////////////////////////////////////////////
+      var path = document.getElementById('path');
+      var del = document.getElementById('delete');
+      var ins = document.getElementById('insert');
+
+      document.getElementById('simpleButton').onclick = function() {
+        simpleButtonClick()
+      };
+
+      document.getElementById('arrayButton').onclick = function() {
+        arrayButtonClick()
+      };
+
+      //This works on one-tier objects.
+      function simpleButtonClick() {
+        doc.submitOp([{p: [path.value],od: del.value, oi: ins.value}]);
+      }
+
+      var splitPath;
+      var intPath;
+      var endPath;
+      function arrayButtonClick() {
+
+        console.log("path.value is " + path.value);
+        splitPath = path.value.split(",");
+        intPath = splitPath.map(Number);
+
+        //correcting the map(Number) call on Strings.
+        intPath.map(function(index){
+          if(Number.isNaN(intPath[index])){
+            intPath[index] = splitPath[index];
+            intPath[index] = "\"" + intPath[index] + "\"";
+          }
+        });
+
+        //I have tried to use the next line to remove a set of parentheses
+        //at the beginning and the end of my path.
+        //.replace(/^"(.*)"$/, '$1'));
+        console.log("splitPath is " + splitPath);
+        console.log("intPath IS " + intPath);
+
+        console.log("doc.submitOp([{p: [" + intPath + "], ld: " + del.value +", li: " + ins.value +"}]);");
+
+        //The path will work if you hard code it here, but I can not make it work from
+        //the input. It won't accept it. The above line will just print exactly
+        //what this submitOp should be.
+        doc.submitOp([{
+          p: [intPath],
+          ld: del.value,
+          li: ins.value
+        }]);
+
+      }
+      /////////////////////////////////////////////////////////////////////////
+      ///////////////////////////End New Code//////////////////////////////////
+      /////////////////////////////////////////////////////////////////////////
+
+      // create the editor
+      var container = document.getElementById("jsoneditor");
+      setTimeout(function() {
+        var editor = new JSONEditor(container, {
+          onChange: function(type, change) {
+            doc.submitOp([{
+              p: [],
+              od: doc.data,
+              oi: editor.get()
+            }], true);
+          }
+        }, doc.data);
+        doc.on('op', function(op, local) {
+          if (!local) {
+            console.log("op:", op);
+            console.log("doc.data:", doc.data);
+            editor.set(doc.data);
+          }
+        });
+      }, 2000);
+    });
+  </script>
+</body>
+
 </html>
