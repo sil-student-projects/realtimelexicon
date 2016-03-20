@@ -1,15 +1,17 @@
-##This is Dave's branch for the RealTimeLexicon GitHub.##
+#Spencer's branch for RealTimeLexicon.#
 The directory structure is as follows.
 
-###keyword-wrangler directory###
-As things currently stand, the nodecraftsman tutorial (which I am HEAVILY modifying)
-is in the keyword-wrangler directory. That directory contains its own README
-with instructions specefic to it.
+###Bootstrap_UI_ShareJS###
+This holds a basic example using the attachTextArea function.
 
-###miscellaneous directory###
-The miscellaneous directory contains past work from this repo.
+###Experiments###
+This holds early experimentation with ShareDB.
 
-###experiments directory###
-The experiments directory is supposed to be a place to put isolated code segments
-for experimentation purposes. But maybe if something that works is stumbled on,
-just keep it in here.
+###Keyword-Wrangler###
+This holds a node application that was modified by Dave.
+
+###Miscellaneous###
+This holds various individual files. No full projects.
+
+###ShareDB_Examples-Master###
+This holds the most updated part of our project. We are working towards dynamically generating the path and deleting then reinserting small parts of the tree. It is run using `node server.js` and it will be running at *http://localhost:8080/jsoneditor.html*.
