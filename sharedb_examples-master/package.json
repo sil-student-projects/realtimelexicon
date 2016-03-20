@@ -1,0 +1,13 @@
+{
+  "name": "sharedb_examples",
+  "version": "0.0.1",
+  "dependencies":{
+    "browserchannel": "",
+    "express": "^4.13.4",
+    "share": "",
+    "sharedb-mongo": "",
+    "serve-static": "",
+    "sharedb": "0.11.34",
+    "ws": "1.0.1"
+  }
+}
