@@ -5,12 +5,15 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 
     <link href="jsoneditor.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="jsoneditor.js"></script>
     <script src="sharedb.js"></script>
     <script src="channel/bcsocket.js"></script>
   </head>
   <body>
     <div id="jsoneditor" style="width: 400px; height: 400px;"></div>
+    <input type="text" id="text_field"></input>
+    <button id="submit">Submit Op</button>
     <script>
       var socket = new BCSocket('/channel');
       var connection = new window.sharedb.Connection(socket);
@@ -37,6 +40,13 @@
               editor.set(doc.data);
             }});
         }, 2000);
+
+        var text_field = document.getElementById("text_field");
+        var submit_button = $("#submit");
+        submit_button.bind("click", function() {
+          var op_obj = JSON.parse(text_field.value);
+          doc.submitOp(op_obj, true);
+        });
       });
     </script>
   </body>
