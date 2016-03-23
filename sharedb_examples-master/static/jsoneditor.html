@@ -76,7 +76,9 @@
         console.log("path.value is " + path.value);
         splitPath = path.value.split(",");
         splitPath.forEach(function(item, index, array) {
-          if (!isNaN(item)) {     //if it's a number
+          //source for if statement is in a comment for top voted answer here:
+          //http://stackoverflow.com/questions/175739/is-there-a-built-in-way-in-javascript-to-check-if-a-string-is-a-valid-number
+          if (+item === +item) {  //if it's a number
             array[index] = +item; //convert the array elem to number
           }
         });
