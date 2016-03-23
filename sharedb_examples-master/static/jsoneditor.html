@@ -75,33 +75,25 @@
 
         console.log("path.value is " + path.value);
         splitPath = path.value.split(",");
-        intPath = splitPath.map(Number);
-
-        //correcting the map(Number) call on Strings.
-        intPath.map(function(index){
-          if(Number.isNaN(intPath[index])){
-            intPath[index] = splitPath[index];
-            intPath[index] = "\"" + intPath[index] + "\"";
+        splitPath.forEach(function(item, index, array) {
+          if (!isNaN(item)) {     //if it's a number
+            array[index] = +item; //convert the array elem to number
           }
         });
 
-        //I have tried to use the next line to remove a set of parentheses
-        //at the beginning and the end of my path.
-        //.replace(/^"(.*)"$/, '$1'));
-        console.log("splitPath is " + splitPath);
-        console.log("intPath IS " + intPath);
+        //start to build the operation object
+        var op = {p: splitPath};
 
-        console.log("doc.submitOp([{p: [" + intPath + "], ld: " + del.value +", li: " + ins.value +"}]);");
+        if (del.value) {
+          op.ld = del.value;
+        }
 
-        //The path will work if you hard code it here, but I can not make it work from
-        //the input. It won't accept it. The above line will just print exactly
-        //what this submitOp should be.
-        doc.submitOp([{
-          p: [intPath],
-          ld: del.value,
-          li: ins.value
-        }]);
+        if (ins.value) {
+          op.li = ins.value;
+        }
 
+        console.log("op is:", JSON.stringify(op));
+        doc.submitOp([op]);
       }
       /////////////////////////////////////////////////////////////////////////
       ///////////////////////////End New Code//////////////////////////////////
