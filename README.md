@@ -2,7 +2,7 @@
 The directory structure is as follows.
 
 ### Bootstrap_UI_ShareJS
-This holds a basic example using the attachTextArea function.
+This holds a basic example that can demonstrate much of our end-goal functionality using the attachTextArea function.
 
 ### Experiments
 This holds early experimentation with ShareDB.
@@ -17,10 +17,10 @@ This holds various individual files. No full projects.
 This holds the node_modules for the directory.
 
 ### React
-This is a simple React tutorial. I am working towards recreating the functionality of Dr. Lu's example. It requires that you use this JSFiddle because I am yet to do the extra work to make it work locally. https://jsfiddle.net/6rhdpt5c/92/
+I am working towards recreating the functionality of Dr. Lu's example. It requires that you use this JSFiddle. https://jsfiddle.net/6rhdpt5c/92/
 
 ### Scotch
-This is a simple ShareJS tutorial. Running it is not straightforward.
+This is a simple ShareJS tutorial.
 
 Briefly, it requires that you:
 - Install Redis first.
