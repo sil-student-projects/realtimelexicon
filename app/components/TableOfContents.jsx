@@ -15,7 +15,7 @@ module.exports = React.createClass({
               <br/>
             </div>
           );
-      })
+        })
       }
       </div>
     )
