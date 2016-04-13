@@ -50,4 +50,4 @@ app.get('/', function(req, res) {
   res.render('./../app/index.ejs');
 });
 
-app.listen(7777);
+module.exports = app;
