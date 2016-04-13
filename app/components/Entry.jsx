@@ -3,34 +3,32 @@ var React = require('react');
 var MeaningsContainer = require('./MeaningsContainer.jsx');
 
 module.exports = React.createClass({
-
-  addMeaning: function(def, parPath) {
+  addMeaning: function() {
     var self = this;
     var doc = this.props.doc;
-    //console.log((doc.data[parPath].meanings).length);
-    var arrayPosition = (doc.data[parPath].meanings).length;
-    console.log("arr:", arrayPosition);
-    var newPath = parPath.slice();
+    var entry = this.props.entry;
+    var arrayPosition = entry.meanings.length;
+    var newPath = entry.path.slice();
 
-    //This should dynamically generate the path.
     newPath.push("meanings");
     newPath.push(arrayPosition);
 
-    var ins_obj = {meaning: def, path: newPath};
+    var ins_obj = {meaning: "", path: newPath};
+
     doc.submitOp([{p: newPath, li: ins_obj}], function() {
       self.setState({
-        entries: doc.data
+        entry: entry
       });
     });
   },
-
   render: function() {
     var entry = this.props.entry;
     if (entry) {
       return (
         <div>
-          <div>{entry.word}</div>
-          <MeaningsContainer addMeaning={this.addMeaning} entry={this.props.entry} parentPath={this.props.parentPath}/>
+          <h3>{entry.word}</h3>
+          <button onClick={this.addMeaning}>Add Meaning</button>
+          <MeaningsContainer meanings={entry.meanings} doc={this.props.doc}/>
         </div>
       );
     } else {

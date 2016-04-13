@@ -20,7 +20,7 @@ module.exports = React.createClass({
   render: function() {
     return (
       <div>
-          <input type="text" value={this.state.newEntry} onChange={this.updateNewEntry}/>
+          <input type="text" value={this.state.newEntry} onChange={this.updateNewEntry} />
           <button onClick={this.handleAddNew}>Add Entry</button>
       </div>
     );
