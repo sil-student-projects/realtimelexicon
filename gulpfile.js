@@ -1,12 +1,11 @@
+var app = require('./server/server.js');
 var gulp = require('gulp');
-var LiveServer = require('gulp-live-server');
 var browserify = require('browserify');
 var reactify = require('reactify');
 var source = require('vinyl-source-stream');
 
-gulp.task('live-server', ['bundle', 'copy'], function() {
-  var server = new LiveServer('server/server.js');
-  server.start();
+gulp.task('server', ['bundle', 'copy'], function() {
+  app.listen(7777);
 });
 
 gulp.task('bundle', function() {
