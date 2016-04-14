@@ -79,5 +79,9 @@ doc.subscribe(function(error) {
     });
   }
 
+  doc.on("op", function() {
+    ReactDOM.render(<Dictionary />, the_div);
+  });
+
   ReactDOM.render(<Dictionary />, the_div);
 });
