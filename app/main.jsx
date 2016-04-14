@@ -20,11 +20,13 @@ doc.subscribe(function(error) {
     if (!doc.type) {
       var laughKey = makeKey("laugh"),
           loveKey = makeKey("love"),
-          leadKey = makeKey("lead");
+          leadKey = makeKey("lead"),
+          addEntryInputKey = makeKey("addEntryInput");
       var obj = {};
       obj[laughKey] = {path: [laughKey], word: "laugh", meanings: []};
       obj[loveKey] = {path: [loveKey], word: "love", meanings: []};
       obj[leadKey] = {path: [leadKey], word: "lead", meanings: []};
+      obj[addEntryInputKey] = "";
       doc.create(obj);
     }
 
@@ -70,7 +72,7 @@ doc.subscribe(function(error) {
         return (
             <div>
               <h1>Dictionary</h1>
-              <AddEntryForm addEntry={this.addEntry} />
+              <AddEntryForm addEntry={this.addEntry} doc={doc}/>
               <TableOfContents entries={this.state.entries} select={self.selectEntry} remove={self.deleteEntry}/>
               <Entry entry={this.state.entry} doc={doc}/>
             </div>
