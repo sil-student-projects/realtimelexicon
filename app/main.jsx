@@ -39,7 +39,8 @@ doc.subscribe(function(error) {
         return (function() {
           self.setState({
             entries: doc.data,
-            entry: doc.data[key]
+            entry: doc.data[key],
+            key: key
           });
         });
       },
@@ -50,7 +51,8 @@ doc.subscribe(function(error) {
         doc.submitOp([{p: [key], oi: ins_obj}], function() {
           self.setState({
             entries: doc.data,
-            entry: doc.data[key]
+            entry: doc.data[key],
+            key: key
           });
         });
       },
@@ -61,7 +63,8 @@ doc.subscribe(function(error) {
             doc.submitOp([{p: [key], od: doc.data[key]}], function() {
               self.setState({
                 entries: doc.data,
-                entry: null
+                entry: doc.data[key],
+                key: key
               });
             });
           }
@@ -74,7 +77,7 @@ doc.subscribe(function(error) {
               <h1>Dictionary</h1>
               <AddEntryForm addEntry={this.addEntry} doc={doc}/>
               <TableOfContents entries={this.state.entries} select={self.selectEntry} remove={self.deleteEntry}/>
-              <Entry entry={this.state.entry} doc={doc}/>
+              <Entry entry={doc.data[self.state.key]} doc={doc}/>
             </div>
         )
       }
