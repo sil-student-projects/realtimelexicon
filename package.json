@@ -9,6 +9,7 @@
   "author": "Dave Gillie",
   "license": "ISC",
   "dependencies": {
+    "async": "^1.5.2",
     "browserchannel": "",
     "browserify": "^13.0.0",
     "ejs": "^2.4.1",

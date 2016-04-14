@@ -1,58 +1,70 @@
 var React = require('react');
 
-var MeaningsList = require('./MeaningsList.jsx');
-
 module.exports = React.createClass({
+  removeMeaning: function(current) {
+    var self = this;
+    var doc = self.props.doc;
+    return (function() {
+      var entryKey = current.path[0];
+      var meaningsLength = doc.data[entryKey].meanings.length;
+      var indexOfDeleted = current.path[2];
+      var ops = [];
+      for(var i = indexOfDeleted + 1; i < meaningsLength; i++) {
+        ops.push({p: [entryKey, "meanings", i, "path", 2], na: -1});
+      }
+      ops.push({p: current.path, ld: current});
+      doc.submitOp(ops, function() {
+        self.setState({
+          entry: doc.data[entryKey]
+        });
+      });
+    });
+  },
+  updateMeaning: function(meaning) {
+    var self = this;
+    var doc = self.props.doc;
+    return (function() {
+      var entryKey = meaning.path[0];
+      var inputKey = entryKey + meaning.path[2];
+      var input = document.getElementById(inputKey);
+      var copyOfMeaningPath = JSON.parse(JSON.stringify(meaning.path));
+      copyOfMeaningPath.push("meaning");
+      copyOfMeaningPath.push(0);
+      var ops = [];
+      ops.push({p: copyOfMeaningPath, sd: meaning.meaning});
+      ops.push({p: copyOfMeaningPath, si: input.value});
 
-  createMeaning: function() {
-
+      doc.submitOp(ops, function() {
+        self.setState({
+          entry: doc.data[entryKey]
+        });
+      });
+    });
   },
   render: function() {
-    //entry = this.props.entry;
-    //check if the array is empty
-    
-    if (true){//entry.meanings.length > 0) {
+    if (this.props.meanings.length > 0) {
+      var self = this;
       return (
         <div>
-            <button onClick={this.createMeaning}>Add Meaning</button>
-            <MeaningsList addMeaning={this.props.addMeaning} parentPath={this.props.parentPath}/>
+          {
+          this.props.meanings.map(function(current, index) {
+            var key = current.path[0] + index;
+            return (
+              <div key={"meaning"+index}>
+                <input id={key} value={current.meaning} placeholder="Enter Meaning" onChange={self.updateMeaning(current)}></input>
+                <button onClick={self.removeMeaning(current)}>delete</button>
+              </div>
+            );
+          })
+          }
         </div>
       );
     } else {
       return (
-        <button onClick={this.createMeaning}>Add Meaning</button>
+        <div>
+          No meanings yet
+        </div>
       );
     }
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-*/
