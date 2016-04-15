@@ -73,12 +73,48 @@ doc.subscribe(function(error) {
       render: function() {
         var self = this;
         return (
-            <div>
-              <h1>Dictionary</h1>
-              <AddEntryForm addEntry={this.addEntry} doc={doc}/>
-              <TableOfContents entries={this.state.entries} select={self.selectEntry} remove={self.deleteEntry}/>
-              <Entry entry={doc.data[self.state.key]} doc={doc}/>
-            </div>
+          <div>
+              <nav className="navbar navbar-inverse navbar-fixed-top"  id="sil-navbar">
+                <div className="container-fluid">
+                  <div className="navbar-header">
+                    <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                      <span className="sr-only">Toggle navigation</span>
+                        <span className="icon-bar"></span>
+                        <span className="icon-bar"></span>
+                        <span className="icon-bar"></span>
+                    </button>
+                    <a className="navbar-brand" id="sil-navbar-brand">Realtime Dictionary</a>
+                  </div>
+
+                  <div id="navbar" className="navbar-collapse collapse">
+                    <ul className="nav navbar-nav navbar-right">
+                      <li><a>My Projects</a></li>
+                      <li><a>Learn</a></li>
+                      <li><a>Discuss</a></li>
+                      <li><a>Profile Settings</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-sm-3 col-md-2 sidebar">
+                    <ul className="nav nav-sidebar">
+                      <li className="active"><a>Word List<span className="sr-only"></span></a></li>
+                    </ul>
+                    <AddEntryForm addEntry={this.addEntry} doc={doc}/>
+                    <TableOfContents entries={this.state.entries} select={self.selectEntry} remove={self.deleteEntry}/>
+                  </div>
+                  <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" margin-top="-25px">
+                    <h1 className="page-header">
+                      <img src="lf_logo-beta.png" alt="Language Forge" id="sil-img"></img>
+                      Realtime Dictionary
+                    </h1>
+                    <Entry entry={doc.data[self.state.key]} doc={doc}/>
+                  </div>
+                </div>
+              </div>
+          </div>
         )
       }
     });

@@ -26,13 +26,13 @@ module.exports = React.createClass({
     if (entry) {
       return (
         <div>
-          <h3>{entry.word}</h3>
-          <button onClick={this.addMeaning}>Add Meaning</button>
+          <h2 className="sub-header">Selected Word: {entry.word}</h2>
+          <button onClick={this.addMeaning} className="meaning-button">Add Meaning</button>
           <MeaningsContainer meanings={entry.meanings} doc={this.props.doc}/>
         </div>
       );
     } else {
-        return(<div>No Word Yet!</div>);
+        return(<div><h3>No Word Yet!</h3></div>);
     }
   }
 });

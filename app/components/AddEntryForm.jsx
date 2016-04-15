@@ -28,7 +28,7 @@ module.exports = React.createClass({
     var key = makeKey(id);
     return (
       <div>
-          <input type="text" id={id} value={doc.data[key]} placeholder="A new word" onChange={this.updateAddEntryInput} />
+          <input type="text" id={id} value={doc.data[key]} placeholder="A New Word" onChange={this.updateAddEntryInput} />
           <button onClick={this.handleAddNew}>Add Entry</button>
       </div>
     );

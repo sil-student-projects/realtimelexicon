@@ -46,17 +46,22 @@ module.exports = React.createClass({
       var self = this;
       return (
         <div>
-          {
-          this.props.meanings.map(function(current, index) {
-            var key = current.path[0] + index;
-            return (
-              <div key={"meaning"+index}>
-                <input id={key} value={current.meaning} placeholder="Enter Meaning" onChange={self.updateMeaning(current)}></input>
-                <button onClick={self.removeMeaning(current)}>delete</button>
-              </div>
-            );
-          })
-          }
+            {
+              this.props.meanings.map(function(current, index) {
+                var key = current.path[0] + index;
+                return (
+                  <div key={"meaning"+index}>
+                    <div className="sil-input">
+                      <div className="input-group">
+                          <span className="input-group-addon" id="basic-addon1">Meaning</span>
+                          <input type="text" className="form-control" aria-describedby="basic-addon1" id={key} value={current.meaning} placeholder="Enter Meaning" onChange={self.updateMeaning(current)}></input>
+                      </div>
+                      <span onClick={self.removeMeaning(current)} id="delete-box">[Delete]</span>
+                    </div>
+                  </div>
+                );
+              })
+            }
         </div>
       );
     } else {
