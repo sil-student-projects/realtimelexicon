@@ -22,4 +22,7 @@ gulp.task('bundle', function() {
 gulp.task('copy', function() {
   gulp.src(['app/*.css'])
   .pipe(gulp.dest('./.tmp'));
+
+  gulp.src(['app/*.png'])
+  .pipe(gulp.dest('./.tmp'));
 });
