@@ -21,12 +21,39 @@ module.exports = React.createClass({
       });
     });
   },
+  updateWord: function(entry) {
+    var self = this;
+    var doc = self.props.doc;
+    var entryKey = entry.path[0];
+    return (function() {
+      var input = document.getElementById(entryKey);
+      var copyOfPath = JSON.parse(JSON.stringify(entry.path));
+      copyOfPath.push("word");
+      copyOfPath.push(0);
+      var ops = [];
+      ops.push({p: copyOfPath, sd: entry.word});
+      ops.push({p: copyOfPath, si: input.value});
+      doc.submitOp(ops, function() {
+        self.setState({
+          entries:doc.data,
+        });
+      });
+    });
+  },
   render: function() {
+    var self = this;
     var entry = this.props.entry;
     if (entry) {
+      var key = entry.path[0];
       return (
         <div>
           <h2 className="sub-header">Selected Word: {entry.word}</h2>
+          <div className="sil-word">
+            <div className="input-group">
+              <span className="input-group-addon" id="basic-addon1">Word</span>
+              <input type="text" className="form-control" aria-describedby="basic-addon1" id={key} value={entry.word} placeholder="Enter Word" onChange={self.updateWord(entry)}></input>
+            </div>
+          </div>
           <button onClick={this.addMeaning} className="meaning-button">Add Meaning</button>
           <MeaningsContainer meanings={entry.meanings} doc={this.props.doc}/>
         </div>

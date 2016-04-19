@@ -25,4 +25,7 @@ gulp.task('copy', function() {
 
   gulp.src(['app/*.png'])
   .pipe(gulp.dest('./.tmp'));
+
+  gulp.src(['app/*.js'])
+  .pipe(gulp.dest('./.tmp'));
 });

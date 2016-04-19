@@ -33,7 +33,6 @@ module.exports = React.createClass({
       var ops = [];
       ops.push({p: copyOfMeaningPath, sd: meaning.meaning});
       ops.push({p: copyOfMeaningPath, si: input.value});
-
       doc.submitOp(ops, function() {
         self.setState({
           entry: doc.data[entryKey]
@@ -67,7 +66,7 @@ module.exports = React.createClass({
     } else {
       return (
         <div>
-          No meanings yet
+          <h3>No Meanings yet!</h3>
         </div>
       );
     }

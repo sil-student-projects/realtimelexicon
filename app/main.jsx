@@ -62,9 +62,10 @@ doc.subscribe(function(error) {
           function() {
             doc.submitOp([{p: [key], od: doc.data[key]}], function() {
               self.setState({
-                entries: doc.data,
-                entry: doc.data[key],
-                key: key
+                entries: doc.data
+                //entries: doc.data,
+                //entry: doc.data[key],
+                //key: key
               });
             });
           }
