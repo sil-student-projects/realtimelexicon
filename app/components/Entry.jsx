@@ -1,5 +1,7 @@
 var React = require('react');
 
+var makeKey = require("./../functions.js").makeKey;
+
 var MeaningsContainer = require('./MeaningsContainer.jsx');
 
 module.exports = React.createClass({
@@ -7,15 +9,15 @@ module.exports = React.createClass({
     var self = this;
     var doc = this.props.doc;
     var entry = this.props.entry;
-    var arrayPosition = entry.meanings.length;
+    var newKey = makeKey();
     var newPath = entry.path.slice();
 
     newPath.push("meanings");
-    newPath.push(arrayPosition);
+    newPath.push(newKey);
 
     var ins_obj = {meaning: "", path: newPath};
 
-    doc.submitOp([{p: newPath, li: ins_obj}], function() {
+    doc.submitOp([{p: newPath, oi: ins_obj}], function() {
       self.setState({
         entry: entry
       });

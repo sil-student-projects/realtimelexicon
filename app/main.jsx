@@ -14,23 +14,15 @@ var doc = connection.get("temporary", "hello-world-document");
 var makeKey = require("./functions.js").makeKey;
 
 doc.subscribe(function(error) {
+  var Dictionary;
   if (error) {
     console.log("Failed to subscribe.", error);
   } else {
     if (!doc.type) {
-      var laughKey = makeKey("laugh"),
-          loveKey = makeKey("love"),
-          leadKey = makeKey("lead"),
-          addEntryInputKey = makeKey("addEntryInput");
-      var obj = {};
-      obj[laughKey] = {path: [laughKey], word: "laugh", meanings: []};
-      obj[loveKey] = {path: [loveKey], word: "love", meanings: []};
-      obj[leadKey] = {path: [leadKey], word: "lead", meanings: []};
-      obj[addEntryInputKey] = "";
-      doc.create(obj);
+      doc.create({});
     }
 
-    var Dictionary = React.createClass({
+    Dictionary = React.createClass({
       getInitialState: function() {
         return {entries: doc.data};
       },
@@ -46,8 +38,8 @@ doc.subscribe(function(error) {
       },
       addEntry: function(entry) {
         var self = this;
-        var key = makeKey(entry);
-        var ins_obj = {word: entry, path: [key], meanings: []};
+        var key = makeKey();
+        var ins_obj = {word: entry, path: [key], meanings: {} };
         doc.submitOp([{p: [key], oi: ins_obj}], function() {
           self.setState({
             entries: doc.data,
@@ -63,9 +55,6 @@ doc.subscribe(function(error) {
             doc.submitOp([{p: [key], od: doc.data[key]}], function() {
               self.setState({
                 entries: doc.data
-                //entries: doc.data,
-                //entry: doc.data[key],
-                //key: key
               });
             });
           }

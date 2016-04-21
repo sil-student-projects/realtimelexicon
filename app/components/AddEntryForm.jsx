@@ -16,11 +16,7 @@ module.exports = React.createClass({
     doc.submitOp(ops);
   },
   handleAddNew: function() {
-    var self = this;
-    var doc = this.props.doc;
-    var addEntryInputKey = makeKey("addEntryInput");
-    self.props.addEntry(doc.data[addEntryInputKey]);
-    doc.submitOp({p: [addEntryInputKey, 0], sd: doc.data[addEntryInputKey]});
+    this.props.addEntry("");
   },
   render: function() {
     var doc = this.props.doc;
