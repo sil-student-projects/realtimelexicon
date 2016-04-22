@@ -9,7 +9,7 @@ var AddEntryForm = require('./components/AddEntryForm.jsx');
 
 var socket = new BCSocket('/channel');
 var connection = new window.sharedb.Connection(socket);
-var doc = connection.get("temporary", "hello-world-document");
+var doc = connection.get("temporary", "name-of-dictionary");
 
 var makeKey = require("./functions.js").makeKey;
 
@@ -36,10 +36,10 @@ doc.subscribe(function(error) {
           });
         });
       },
-      addEntry: function(entry) {
+      addEntry: function() {
         var self = this;
         var key = makeKey();
-        var ins_obj = {word: entry, path: [key], meanings: {} };
+        var ins_obj = {word: "", path: [key], meanings: {} };
         doc.submitOp([{p: [key], oi: ins_obj}], function() {
           self.setState({
             entries: doc.data,
@@ -92,7 +92,7 @@ doc.subscribe(function(error) {
                     <ul className="nav nav-sidebar">
                       <li className="active"><a>Word List<span className="sr-only"></span></a></li>
                     </ul>
-                    <AddEntryForm addEntry={this.addEntry} doc={doc}/>
+                    <button className="addEntry" onClick={this.addEntry}>Add Entry</button>
                     <TableOfContents entries={this.state.entries} select={self.selectEntry} remove={self.deleteEntry}/>
                   </div>
                   <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" margin-top="-25px">
