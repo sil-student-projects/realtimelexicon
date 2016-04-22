@@ -5,7 +5,6 @@ var ReactDOM = require('react-dom');
 
 var Entry = require('./components/Entry.jsx');
 var TableOfContents = require('./components/TableOfContents.jsx');
-var AddEntryForm = require('./components/AddEntryForm.jsx');
 
 var socket = new BCSocket('/channel');
 var connection = new window.sharedb.Connection(socket);
