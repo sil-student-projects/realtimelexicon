@@ -1,39 +1,36 @@
 var React = require('react');
 
+
 module.exports = React.createClass({
-  removeMeaning: function(current) {
+  updateMeaning: function(e) {
+    var key = e.target.id;
+    var meaning = this.props.meanings[key];
+    var value = e.target.value;
+
     var self = this;
-    var doc = self.props.doc;
-    return (function() {
-      var entryKey = current.path[0];
-      var meaningsLength = doc.data[entryKey].meanings.length;
-      var indexOfDeleted = current.path[2];
-      var ops = [];
-      for(var i = indexOfDeleted + 1; i < meaningsLength; i++) {
-        ops.push({p: [entryKey, "meanings", i, "path", 2], na: -1});
-      }
-      ops.push({p: current.path, ld: current});
-      doc.submitOp(ops, function() {
-        self.setState({
-          entry: doc.data[entryKey]
-        });
+    var entryKey = meaning.path[0];
+
+    var copyOfMeaningPath = JSON.parse(JSON.stringify(meaning.path));
+    copyOfMeaningPath.push("meaning");
+    copyOfMeaningPath.push(0);
+
+    var ops = [];
+    ops.push({p: copyOfMeaningPath, sd: meaning.meaning});
+    ops.push({p: copyOfMeaningPath, si: value});
+
+    this.props.doc.submitOp(ops, function() {
+      self.setState({
+        entry: self.props.doc.data[entryKey]
       });
     });
   },
-  updateMeaning: function(meaning) {
+  removeMeaning: function(key) {
     var self = this;
+    var meaning = this.props.meanings[key];
+    var entryKey = meaning.path[0];
     var doc = self.props.doc;
     return (function() {
-      var entryKey = meaning.path[0];
-      var inputKey = entryKey + meaning.path[2];
-      var input = document.getElementById(inputKey);
-      var copyOfMeaningPath = JSON.parse(JSON.stringify(meaning.path));
-      copyOfMeaningPath.push("meaning");
-      copyOfMeaningPath.push(0);
-      var ops = [];
-      ops.push({p: copyOfMeaningPath, sd: meaning.meaning});
-      ops.push({p: copyOfMeaningPath, si: input.value});
-      doc.submitOp(ops, function() {
+      doc.submitOp([{p: meaning.path, od: meaning}], function() {
         self.setState({
           entry: doc.data[entryKey]
         });
@@ -41,21 +38,27 @@ module.exports = React.createClass({
     });
   },
   render: function() {
-    if (this.props.meanings.length > 0) {
+    var meanings = this.props.meanings;
+    var indicator = false;
+    var doc = this.props.doc;
+    for (var prop in meanings) {
+      indicator = true;
+      break;
+    }
+    if (indicator) {
       var self = this;
       return (
-        <div>
+        <div onChange={self.updateMeaning}>
             {
-              this.props.meanings.map(function(current, index) {
-                var key = current.path[0] + index;
+              Object.keys(meanings).map(function(key, index) {
                 return (
                   <div key={"meaning"+index}>
                     <div className="sil-input">
                       <div className="input-group">
                           <span className="input-group-addon" id="basic-addon1">Meaning</span>
-                          <input type="text" className="form-control" aria-describedby="basic-addon1" id={key} value={current.meaning} placeholder="Enter Meaning" onChange={self.updateMeaning(current)}></input>
+                          <input type="text" className="form-control" aria-describedby="basic-addon1" id={key} value={meanings[key].meaning} placeholder="Enter Meaning" defaultValue=""></input>
                       </div>
-                      <span onClick={self.removeMeaning(current)} id="delete-box">[Delete]</span>
+                      <span onClick={self.removeMeaning(key)} id="delete-box">[Delete]</span>
                     </div>
                   </div>
                 );

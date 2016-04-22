@@ -5,32 +5,23 @@ var ReactDOM = require('react-dom');
 
 var Entry = require('./components/Entry.jsx');
 var TableOfContents = require('./components/TableOfContents.jsx');
-var AddEntryForm = require('./components/AddEntryForm.jsx');
 
 var socket = new BCSocket('/channel');
 var connection = new window.sharedb.Connection(socket);
-var doc = connection.get("temporary", "hello-world-document");
+var doc = connection.get("temporary", "name-of-dictionary");
 
 var makeKey = require("./functions.js").makeKey;
 
 doc.subscribe(function(error) {
+  var Dictionary;
   if (error) {
     console.log("Failed to subscribe.", error);
   } else {
     if (!doc.type) {
-      var laughKey = makeKey("laugh"),
-          loveKey = makeKey("love"),
-          leadKey = makeKey("lead"),
-          addEntryInputKey = makeKey("addEntryInput");
-      var obj = {};
-      obj[laughKey] = {path: [laughKey], word: "laugh", meanings: []};
-      obj[loveKey] = {path: [loveKey], word: "love", meanings: []};
-      obj[leadKey] = {path: [leadKey], word: "lead", meanings: []};
-      obj[addEntryInputKey] = "";
-      doc.create(obj);
+      doc.create({});
     }
 
-    var Dictionary = React.createClass({
+    Dictionary = React.createClass({
       getInitialState: function() {
         return {entries: doc.data};
       },
@@ -44,10 +35,10 @@ doc.subscribe(function(error) {
           });
         });
       },
-      addEntry: function(entry) {
+      addEntry: function() {
         var self = this;
-        var key = makeKey(entry);
-        var ins_obj = {word: entry, path: [key], meanings: []};
+        var key = makeKey();
+        var ins_obj = {word: "", path: [key], meanings: {} };
         doc.submitOp([{p: [key], oi: ins_obj}], function() {
           self.setState({
             entries: doc.data,
@@ -63,9 +54,6 @@ doc.subscribe(function(error) {
             doc.submitOp([{p: [key], od: doc.data[key]}], function() {
               self.setState({
                 entries: doc.data
-                //entries: doc.data,
-                //entry: doc.data[key],
-                //key: key
               });
             });
           }
@@ -103,7 +91,7 @@ doc.subscribe(function(error) {
                     <ul className="nav nav-sidebar">
                       <li className="active"><a>Word List<span className="sr-only"></span></a></li>
                     </ul>
-                    <AddEntryForm addEntry={this.addEntry} doc={doc}/>
+                    <button className="addEntry" onClick={this.addEntry}>Add Entry</button>
                     <TableOfContents entries={this.state.entries} select={self.selectEntry} remove={self.deleteEntry}/>
                   </div>
                   <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" margin-top="-25px">
