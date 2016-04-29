@@ -1,3 +1,20 @@
+/***************************************************************************
+  This is the main file/component that will be loaded upon hitting the
+  root route (home page).
+
+  The "doc" object comes from the collection
+  "temporary" and it has an id of "name-of-dictionary".
+
+  A Dictionary component is then created in the callback of
+  doc.subcribe so that doc.data can be captured.
+
+  Near the end, the Dictionary is re-rendered every time the "op" event
+  is emitted from "doc". This is the magic behind the real-time
+  functionality.
+
+  Find all of the other components in the "app/components" directory.
+***************************************************************************/
+
 window.sharedb = require("sharedb/lib/client");
 
 var React = require('react');
@@ -25,6 +42,7 @@ doc.subscribe(function(error) {
       getInitialState: function() {
         return {entries: doc.data};
       },
+      //resets the "entry" field of the state in order to display that entry
       selectEntry: function(key) {
         var self = this;
         return (function() {
@@ -109,6 +127,7 @@ doc.subscribe(function(error) {
     });
   }
 
+  //rerender the Dictionary on every operation to provide real-time functionality
   doc.on("op", function() {
     ReactDOM.render(<Dictionary />, the_div);
   });

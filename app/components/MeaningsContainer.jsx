@@ -1,21 +1,43 @@
+/***************************************************************************
+  This component will be loaded for a specific Entry. Each Entry will
+  have different meanings, and this is the component that displays them.
+
+  The Entry component handles adding new meanings, so this container simply
+  needs to be able to update and delete meanings.
+***************************************************************************/
+
 var React = require('react');
 
 
 module.exports = React.createClass({
   updateMeaning: function(e) {
+    //the id of each meaning input is set during the render function
     var key = e.target.id;
     var meaning = this.props.meanings[key];
+
+    //the value which the meaning should now have
     var value = e.target.value;
 
     var self = this;
+    //the key of the entry that this meaning is for is always the first element in the path
     var entryKey = meaning.path[0];
 
-    var copyOfMeaningPath = JSON.parse(JSON.stringify(meaning.path));
+    //use a copy of the meanings path instead of the original path
+    var copyOfMeaningPath = meaning.path.slice();
+
+    //the path already points to the correct meaning object, so push "meaning"
+    //onto the end of the array to point at the meanings "meaning" string
     copyOfMeaningPath.push("meaning");
+
+    //the operations being submitted will be on the entire string, so push a 0
+    //index onto the end of the array to point at the beginning of the string
     copyOfMeaningPath.push(0);
 
+    //create an array of 2 operations to submit to the server in order
     var ops = [];
+    //first, delete the entire meaning that is currently there
     ops.push({p: copyOfMeaningPath, sd: meaning.meaning});
+    //second insert the meaning that needs to be there
     ops.push({p: copyOfMeaningPath, si: value});
 
     this.props.doc.submitOp(ops, function() {
@@ -27,6 +49,7 @@ module.exports = React.createClass({
   removeMeaning: function(key) {
     var self = this;
     var meaning = this.props.meanings[key];
+    //the key of the entry that this meaning is for is always the first element in the path
     var entryKey = meaning.path[0];
     var doc = self.props.doc;
     return (function() {
@@ -39,6 +62,7 @@ module.exports = React.createClass({
   },
   render: function() {
     var meanings = this.props.meanings;
+    //use indicator to see if there are any meanings in the word yet and render appropriately
     var indicator = false;
     var doc = this.props.doc;
     for (var prop in meanings) {
