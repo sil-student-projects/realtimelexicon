@@ -6,7 +6,7 @@ In order to run the demo app do the following:
 
 * "sudo npm install --global gulp", manual install gulp globally if gulp is not found
 
-* Install mongodb, see https://docs.mongodb.org/manual/installation/
+* Install mongodb, see [mongo site](https://docs.mongodb.org/manual/installation/)
 
 * "mkdir -p ./data/db" and "mongod -dbpath ./data/db", make a directory to put data
 

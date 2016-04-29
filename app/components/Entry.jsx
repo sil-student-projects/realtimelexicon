@@ -44,7 +44,7 @@ module.exports = React.createClass({
       var input = document.getElementById(entryKey);
 
       //work with a copy of the path instead of the original path
-      var copyOfPath = JSON.parse(JSON.stringify(entry.path));
+      var copyOfPath = entry.path.slice();
 
       //push "word" and index 0 into the path so we can reference the entire
       //string of the word
@@ -57,7 +57,7 @@ module.exports = React.createClass({
       ops.push({p: copyOfPath, sd: entry.word});
       //second, insert the value that should be there
       ops.push({p: copyOfPath, si: input.value});
-      
+
       doc.submitOp(ops, function() {
         self.setState({
           entries:doc.data,

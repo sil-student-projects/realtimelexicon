@@ -23,7 +23,7 @@ module.exports = React.createClass({
     var entryKey = meaning.path[0];
 
     //use a copy of the meanings path instead of the original path
-    var copyOfMeaningPath = JSON.parse(JSON.stringify(meaning.path));
+    var copyOfMeaningPath = meaning.path.slice();
 
     //the path already points to the correct meaning object, so push "meaning"
     //onto the end of the array to point at the meanings "meaning" string
@@ -62,6 +62,7 @@ module.exports = React.createClass({
   },
   render: function() {
     var meanings = this.props.meanings;
+    //use indicator to see if there are any meanings in the word yet and render appropriately
     var indicator = false;
     var doc = this.props.doc;
     for (var prop in meanings) {
