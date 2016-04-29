@@ -1,3 +1,11 @@
+/***************************************************************************
+  This will be the component that is displayed upon selecting a particular
+  Entry from the TableOfContents to view.
+
+  This component needs to be able to add meanings so that it can rerender
+  the meanings container with the new meanings every time one is added.
+***************************************************************************/
+
 var React = require('react');
 
 var makeKey = require("./../functions.js").makeKey;
@@ -10,8 +18,11 @@ module.exports = React.createClass({
     var doc = this.props.doc;
     var entry = this.props.entry;
     var newKey = makeKey();
+    //make a copy of the path instead of using the original path
     var newPath = entry.path.slice();
 
+    //push "meanings" and the newKey into the path so that meaning knows
+    //where it is in the document
     newPath.push("meanings");
     newPath.push(newKey);
 
@@ -26,15 +37,27 @@ module.exports = React.createClass({
   updateWord: function(entry) {
     var self = this;
     var doc = self.props.doc;
+    //the key of the entry is always the first element in the path
     var entryKey = entry.path[0];
     return (function() {
+      //grab the input field for this word
       var input = document.getElementById(entryKey);
+
+      //work with a copy of the path instead of the original path
       var copyOfPath = JSON.parse(JSON.stringify(entry.path));
+
+      //push "word" and index 0 into the path so we can reference the entire
+      //string of the word
       copyOfPath.push("word");
       copyOfPath.push(0);
+
+      //create an array of operations to submit on the doc in order
       var ops = [];
+      //first, delete the entire word string
       ops.push({p: copyOfPath, sd: entry.word});
+      //second, insert the value that should be there
       ops.push({p: copyOfPath, si: input.value});
+      
       doc.submitOp(ops, function() {
         self.setState({
           entries:doc.data,

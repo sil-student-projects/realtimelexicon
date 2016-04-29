@@ -1,3 +1,13 @@
+/***************************************************************************
+  This is the component for the list of all Entries in the dictionary.
+  When it renders, it must map the functions "select" and "remove" with
+  the correct key for the given Entry to every Entry in the dictionary.
+
+  The functions "select" and "remove" are passed in through the props
+  because both functions need to be able to setState at the top level
+  of the dictionary.
+***************************************************************************/
+
 var React = require('react');
 
 module.exports = React.createClass({
